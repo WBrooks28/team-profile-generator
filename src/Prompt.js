@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const Manager = require('../lib/Manager');
 const Engineer = require('../lib/Engineer');
 const Intern = require('../lib/Intern');
-const template = require('./template')
+const Page = require('./Page')
 const writeFile = require('./writeFile');
 
 function Prompt() {
@@ -126,16 +126,16 @@ Prompt.prototype.addIntern = function () {
             },
         ])
         .then(response => {
-            internInput = new Intern(response.name, response.id, response.email, response.github);
+            internInput = new Intern(response.name, response.id, response.email, response.school);
             this.interns.push(internInput);
             this.newTeamMember();
         })
 }
 
-// send inquirer info to template and writeFile
+// send inquirer info to Page and writeFile
 Prompt.prototype.dataHandler = function () {
-    let template = new Template().createHtlm(this.manager, this.engineers, this.interns);
-    writeFile(template)
+    let page = new Page().generateHtml(this.manager, this.engineers, this.interns);
+    writeFile(page)
         .then(writeFileResponse => {
             console.log(writeFileResponse);
         })
